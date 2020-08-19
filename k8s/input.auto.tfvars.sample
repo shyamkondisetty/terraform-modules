@@ -1,0 +1,46 @@
+k8s_cluster = {
+  pod_cidr     = "10.42.0.0/16"
+  service_cidr = "10.43.0.0/16"
+  vpc_uuid     = null
+  region       = "blr1"
+
+  addons = {
+    ingress      = null
+    ccm          = null
+    external_dns = null
+    cert_manager = null
+    ebs          = null
+
+    csi = {
+      enabled    = true
+      upgrade    = false
+    }
+  }
+
+  primary = [
+    {
+      user   = "root"
+      tags   = ["k8s","primary"]
+      image  = "ubuntu-18-04-x64"
+      size   = "s-2vcpu-2gb"
+      labels = []
+    },
+  ]
+
+  node_pools = [
+    {
+      count  = 2
+      name   = "highcpu"
+      user   = "root"
+      image  = "ubuntu-18-04-x64"
+      size   = "s-4vcpu-8gb"
+      tags   = ["k8s","node"]
+      labels = [
+        {
+          name  = "size"
+          value = "highcpu"
+        },
+      ]
+    }
+  ]
+}
